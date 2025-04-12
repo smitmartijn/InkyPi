@@ -17,21 +17,21 @@
 }
 
 .header {
-  height: 15dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: end;
   container-type: size;
+  height: 30px;
 }
 
 .location {
-  font-size: min(50cqh, 8cqi);
+  font-size: 24px;
   text-align: center;
   align-content: end;
   width: 100%;
   font-weight: bold;
-  line-height: 102%;
+  line-height: 90%;
   height: 100%;
 }
 
@@ -133,14 +133,14 @@
 }
 
 .data-point-label {
-  font-size: min(32cqh, 15cqi);
+  font-size: 14px;
   text-align: center;
   font-weight: lighter;
   height: 30%
 }
 
 .data-point-measurement {
-  font-size: min(46cqh, 26cqi);
+  font-size: 16px;
   text-align: center;
   white-space: nowrap;
   align-content: center;
@@ -157,6 +157,7 @@
 
 /* Forecast Row */
 .forecast {
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -166,7 +167,6 @@
   gap: 1.5dvw;
   overflow: hidden;
 }
-
 .forecast-day {
   display: flex;
   flex-direction: column;
@@ -178,9 +178,8 @@
   max-height: 100%;
   gap: 0.5dvh
 }
-
 .forecast-day-name {
-  font-size: min(3.5dvh, 3.5vw);
+  font-size: 14px;
   flex: 1;
   height: 100%;
   min-height: 0;
@@ -191,19 +190,18 @@
   font-weight: bold;
   line-height: 100%;
 }
-
 .forecast-icon {
   max-width: 100%;
   width: 100%;
-  height: 100%;
+  height: 70%;
   flex: 1;
   min-width: 0;
   min-height: 0;
   object-fit: contain;
   padding: 0 1vw;
   max-width: 15dvw;
+  max-height: 9.5dvw; 
 }
-
 .forecast-temps {
   flex: 1;
   text-align: center;
@@ -211,7 +209,7 @@
   min-height: 0;
   min-width: 0;
   height: 100%;
-  font-size: min(3dvh, 2.5vw);
+  font-size: 14px;
 }
 
 .low .high {
@@ -231,7 +229,7 @@
 
 .chart-container {
   width: 100%;
-  height: 16dvh;
+  height: 25dvh;
 }
 
 @media (max-aspect-ratio: 1) {

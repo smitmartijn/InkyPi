@@ -109,29 +109,42 @@ class Weather(BasePlugin):
             forecast.append(day_forecast)
         return forecast
 
+#    def parse_hourly(self, hourly_forecast, tz):
+#        hourly = []
+#        for hour in hourly_forecast[:24]:
+#            dt = datetime.fromtimestamp(hour.get('dt'), tz=timezone.utc).astimezone(tz)
+#            hour_forecast = {
+#                "time": dt.strftime("%-I %p"),
+#                "temperature": int(hour.get("temp")),
+#                "precipitiation": hour.get("pop")
+#            }
+#            hourly.append(hour_forecast)
+#        return hourly
+
     def parse_hourly(self, hourly_forecast, tz):
+        # Get current timestamp, floored to the start of the current hour
+        current_timestamp = int(datetime.now().replace(minute=0, second=0, microsecond=0).timestamp())
+
         hourly = []
-        for hour in hourly_forecast[:24]:
-            dt = datetime.fromtimestamp(hour.get('dt'), tz=timezone.utc).astimezone(tz)
-            hour_forecast = {
-                "time": dt.strftime("%-I %p"),
-                "temperature": int(hour.get("temp")),
-                "precipitiation": hour.get("pop")
-            }
-            hourly.append(hour_forecast)
+        for hour in hourly_forecast:
+            # Get the timestamp from the forecast hour
+            forecast_timestamp = hour.get('dt')
+            # Check if forecast timestamp is greater than or equal to current hour's start
+            if forecast_timestamp >= current_timestamp:
+                hour_forecast = {
+                    "time": datetime.fromtimestamp(forecast_timestamp).strftime("%-I %p"),
+                    "temperature": int(hour.get("temp")),
+                    "precipitiation": hour.get("pop")
+                }
+                hourly.append(hour_forecast)
+                # Break after collecting 24 hours of data
+                if len(hourly) >= 24:
+                    break
+
         return hourly
-        
+
     def parse_data_points(self, weather, air_quality, tz, units):
         data_points = []
-
-        sunrise_epoch = weather.get('current', {}).get("sunrise")
-        sunrise_dt = datetime.fromtimestamp(sunrise_epoch, tz=timezone.utc).astimezone(tz)
-        data_points.append({
-            "label": "Sunrise",
-            "measurement": sunrise_dt.strftime('%I:%M').lstrip("0"),
-            "unit": sunrise_dt.strftime('%p'),
-            "icon": self.get_plugin_dir('icons/sunrise.png')
-        })
 
         sunset_epoch = weather.get('current', {}).get("sunset")
         sunset_dt = datetime.fromtimestamp(sunset_epoch, tz=timezone.utc).astimezone(tz)
@@ -150,33 +163,10 @@ class Weather(BasePlugin):
         })
 
         data_points.append({
-            "label": "Humidity",
-            "measurement": weather.get('current', {}).get("humidity"),
-            "unit": '%',
-            "icon": self.get_plugin_dir('icons/humidity.png')
-        })
-
-        data_points.append({
-            "label": "Pressure",
-            "measurement": weather.get('current', {}).get("pressure"),
-            "unit": 'hPa',
-            "icon": self.get_plugin_dir('icons/pressure.png')
-        })
-
-        data_points.append({
             "label": "UV Index",
             "measurement": weather.get('current', {}).get("uvi"),
             "unit": '',
             "icon": self.get_plugin_dir('icons/uvi.png')
-        })
-
-        visibility = weather.get('current', {}).get("visibility")/1000
-        visibility_str = f">{visibility}" if visibility >= 10 else visibility
-        data_points.append({
-            "label": "Visibility",
-            "measurement": visibility_str,
-            "unit": 'km',
-            "icon": self.get_plugin_dir('icons/visibility.png')
         })
 
         aqi = air_quality.get('list', [])[0].get("main", {}).get("aqi")

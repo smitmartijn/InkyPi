@@ -115,7 +115,9 @@
             document.getElementById('forecastDays').value = pluginSettings.forecastDays;
         } else {
             // set default values
-            document.getElementById('units').value = "imperial";
+            document.getElementById('latitude').value = "51.833656018902175";
+            document.getElementById('longitude').value = "4.692535400390626";
+            document.getElementById('units').value = "metric";
 
             document.getElementById('displayMetrics').checked = true;
             document.getElementById('displayMetrics').value = "true";
@@ -124,7 +126,7 @@
             document.getElementById('displayForecast').checked = true;
             document.getElementById('displayForecast').value = "true";
 
-            document.getElementById('forecastDays').value = 7
+            document.getElementById('forecastDays').value = 3
         }
     });
 </script>
